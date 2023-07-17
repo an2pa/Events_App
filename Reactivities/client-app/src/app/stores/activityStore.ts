@@ -1,12 +1,18 @@
+import agent from "../../app/api/agent";
+import { Activity } from "../../app/models/Activity";
 import { action, makeAutoObservable, makeObservable, observable } from "mobx"
 
 export default class ActivityStore{
-    title ='Hello from MobX!'
+    activities: Activity[] = [];
 
     constructor(){
         makeAutoObservable(this)
     }
-    setTitle=()=>{
-        this.title=this.title+"!"
+    
+    loadActivities=()=>{
+        const activities=agent.Activities.list().then((response)=>
+        this.activities=response
+        )
+        
     }
 }

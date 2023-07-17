@@ -17,10 +17,8 @@ function App() {
   const [activities, setActivities]= useState<Activity[]>([]);
   const {activityStore}= useStore()
   useEffect(()=>{
-    agent.Activities.list().then((response)=>
-    setActivities(response)
-    )
-  }, [])
+    activityStore.loadActivities();
+  }, [activityStore])
 
   const [selectedActivity, setActivity]= useState<Activity | undefined>(undefined);
 
@@ -91,10 +89,9 @@ function handleDeleteActivity(id: string){
        <NavBar openform={openCreateForm}/>
 
        <Container style={{marginTop:'7em'}}>
-       <h1>{activityStore.title}</h1> 
-       <Button content="add exclam" onClick={activityStore.setTitle}/>
+       
        <ActivityDashboard 
-       activities={activities}
+       activities={activityStore.activities}
        selectedActivity={selectedActivity}
        selectActivity={handleSelectedActivity}
        cancelActivity={handleCancleActivity}
