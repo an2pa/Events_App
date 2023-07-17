@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import { Container } from 'semantic-ui-react';
+import { Button, Container } from 'semantic-ui-react';
 import { Activity } from '../models/Activity';
 import NavBar from './NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
@@ -9,11 +9,13 @@ import ActivityDashboard from '../../features/activities/dashboard/ActivityDashb
 import {v4 as uuid} from 'uuid';
 import agent from '../../app/api/agent';
 import { response } from 'express';
+import { useStore } from '../../app/stores/store';
+import { observer } from 'mobx-react-lite';
 
 
 function App() {
   const [activities, setActivities]= useState<Activity[]>([]);
-
+  const {activityStore}= useStore()
   useEffect(()=>{
     agent.Activities.list().then((response)=>
     setActivities(response)
@@ -89,7 +91,8 @@ function handleDeleteActivity(id: string){
        <NavBar openform={openCreateForm}/>
 
        <Container style={{marginTop:'7em'}}>
-
+       <h1>{activityStore.title}</h1> 
+       <Button content="add exclam" onClick={activityStore.setTitle}/>
        <ActivityDashboard 
        activities={activities}
        selectedActivity={selectedActivity}
@@ -109,4 +112,4 @@ function handleDeleteActivity(id: string){
   );
 }
 
-export default App;
+export default observer(App);
